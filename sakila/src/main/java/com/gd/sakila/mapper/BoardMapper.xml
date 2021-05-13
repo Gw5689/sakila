@@ -11,7 +11,7 @@
 			board 
 		<where>
 			<if test="searchWord != null">
-				WHERE board_title LIKE CONCAT('%',${searchWord},'%') 
+				board_title LIKE CONCAT('%',${searchWord},'%') 
 			</if>
 		</where>
 		ORDER BY insert_date DESC 
@@ -22,7 +22,7 @@
 		SELECT COUNT(*) FROM board
 		<where>
 			<if test="searchWord != null">
-				WHERE board_title LIKE CONCAT('%',${searchWord},'%')
+				board_title LIKE CONCAT('%',${searchWord},'%')
 			</if>
 		</where>
 	</select>
