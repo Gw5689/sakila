@@ -12,12 +12,42 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.gd.sakila.service.BoardService;
 import com.gd.sakila.vo.Board;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Controller
 public class BoardController {
 	@Autowired
 	private BoardService boardService;
+	// 리턴타입은 뷰 이름 (문자열)
 	
-	// insert
+	
+	
+	
+	// 글 삭제 폼 , 액션
+	@GetMapping("/removeBoard")
+	public String removeBoard(Model model, @RequestParam(value = "boardId", required = true) int boradId) {
+		// 디버깅
+		log.debug("▶▶▶▶▶▶ param : "+boradId); // <- 문자열을 받아야 하기 때문에 앞에 문자열 추가
+		model.addAttribute("boardId", boradId);
+		return "removeBoard";
+	}
+	
+		// C - > M - > redirect
+	@PostMapping("/removeBoard")
+	public String removeBoard(Board board) {
+		int row = boardService.removeBoard(board);
+		log.debug("▶▶▶▶▶▶ removeBoard row : "+row);
+		if(row == 0) {
+			return "redirect:/getBoardOne?boardId="+board.getBoardId();
+		} else {
+			return "redirect:/getBoardList";
+		}
+		
+	}
+	
+	
+	// 글 입력 폼, 액션
 	@GetMapping("/addBoard")
 	public String addBoard() {
 		return "addBoard";

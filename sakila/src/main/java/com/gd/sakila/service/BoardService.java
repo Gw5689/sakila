@@ -12,13 +12,22 @@ import com.gd.sakila.mapper.BoardMapper;
 import com.gd.sakila.vo.Board;
 import com.gd.sakila.vo.Page;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service // 객체생성
 @Transactional
 public class BoardService {
 	@Autowired // 객체를 주입
 	private BoardMapper boardMapper;
 	
-	//insert
+	// 글 삭제
+	public int removeBoard(Board board) {
+		log.debug(board.toString());
+		return boardMapper.deleteBoard(board);
+	}
+	
+	// 글 입력
 	public int addBoard(Board board) {
 		return boardMapper.insertBoard(board);
 	}
