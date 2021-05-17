@@ -2,6 +2,7 @@ package com.gd.sakila.controller;
 
 import java.util.Map;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,9 +23,31 @@ public class BoardController {
 	// 리턴타입은 뷰 이름 (문자열)
 	
 	
+	// 글 수정 폼 (UPDATE)
+	@GetMapping("/modifyBoard")
+	public String modifyBoard(Model model, @RequestParam(value = "boardId", required = true) int boardId) {
+		// 디버깅
+		log.debug("▶▶▶▶▶▶ modifyBoard param : "+boardId);
+		
+		Map<String, Object> map = boardService.getBoardOne(boardId);
+		
+		model.addAttribute("boardId", map.get("boardId"));
+		model.addAttribute("boardTitle", map.get("boardTitle"));
+		model.addAttribute("boardContent", map.get("boardContent"));
+		
+		return "modifyBoard";
+	}
 	
+	// 글 수정 액션 (UPDATE)
+	@PostMapping("/modifyBoard")
+	public String modifyBoard(Board board) {
+		// 디버깅
+		log.debug("▶▶▶▶▶▶ UPDATE row param : "+ board.getBoardId());
+		boardService.modifyBoard(board);
+		return "redirect:/getBoardOne?boardId="+board.getBoardId();
+	}
 	
-	// 글 삭제 폼 , 액션
+	// 글 삭제 폼 (DELETE)
 	@GetMapping("/removeBoard")
 	public String removeBoard(Model model, @RequestParam(value = "boardId", required = true) int boradId) {
 		// 디버깅
@@ -33,6 +56,7 @@ public class BoardController {
 		return "removeBoard";
 	}
 	
+	// 글 삭제 액션 (DELETE)
 		// C - > M - > redirect
 	@PostMapping("/removeBoard")
 	public String removeBoard(Board board) {
@@ -43,33 +67,33 @@ public class BoardController {
 		} else {
 			return "redirect:/getBoardList";
 		}
-		
 	}
 	
-	
-	// 글 입력 폼, 액션
+	// 글 입력 폼 (INSERT)
 	@GetMapping("/addBoard")
 	public String addBoard() {
 		return "addBoard";
 	}
 	
+	// 글 입력 액션 (INSERT)
 	@PostMapping("/addBoard") // post
 	public String addBoard(Board board) { // 커맨드객체
 		boardService.addBoard(board); // 실행
 		return "redirect:/getBoardList"; // 재요청 sendRedirect -> List로 넘어감
 	}
 	
-	// 상세보기
+	// 상세보기 (boardOne)
 	@GetMapping("/getBoardOne")
 	public String getBoardOne(Model model, 
 								@RequestParam(value = "boardId", required = true) int boardId) {
 		Map<String, Object> map = boardService.getBoardOne(boardId);
-		System.out.println(map);
-		model.addAttribute("map",map);
+		log.debug("map : "+ map);
+		model.addAttribute("boardMap",map.get("boardMap"));
+		model.addAttribute("commentList",map.get("commentList"));
 		return "getBoardOne";
 	}
 	
-	//리스트 
+	//리스트 (getBoardList)
 	@GetMapping("/getBoardList")
 	public String getBoardList(Model model, // model에 담기 
 								@RequestParam(value = "currentPage", defaultValue = "1") int currentPage, 
