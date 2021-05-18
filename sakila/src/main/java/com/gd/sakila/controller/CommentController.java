@@ -24,7 +24,8 @@ public class CommentController {
 	public String removeComment(@RequestParam(value = "commentId", required = true) int commentId, // 필수입력
 			 					@RequestParam(value = "boardId", required = true) int boardId) {
 		// 디버깅
-		log.debug("▶▶▶▶▶▶ (C)removeComment param : "+commentId);
+		log.debug("▶▶▶▶▶▶ (C)removeComment commentId param : "+commentId);
+		log.debug("▶▶▶▶▶▶ (C)removeComment boardId param : "+boardId);
 		int removeCommentRow = commentService.removeComment(commentId); // 서비스에서 removeComment 호출
 		
 		// 디버깅
