@@ -1,7 +1,5 @@
 package com.gd.sakila.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
@@ -16,6 +14,6 @@ public class HomeController {
 		// 디버깅
 			//System.out.println("home...");
 		log.debug("test"); // test 출력 (HomeController)
-		return "home";
+		return "home"; // 로그인
 	}
 }

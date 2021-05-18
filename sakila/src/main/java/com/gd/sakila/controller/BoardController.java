@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.gd.sakila.service.BoardService;
@@ -17,6 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Controller
+@RequestMapping("/admin")
 public class BoardController {
 	@Autowired
 	private BoardService boardService;
@@ -44,7 +46,7 @@ public class BoardController {
 		// 디버깅
 		log.debug("▶▶▶▶▶▶ UPDATE row param : "+ board.getBoardId());
 		boardService.modifyBoard(board);
-		return "redirect:/getBoardOne?boardId="+board.getBoardId();
+		return "redirect:/admin/getBoardOne?boardId="+board.getBoardId();
 	}
 	
 	// 글 삭제 폼 (DELETE)
@@ -63,9 +65,9 @@ public class BoardController {
 		int row = boardService.removeBoard(board);
 		log.debug("▶▶▶▶▶▶ removeBoard row : "+row);
 		if(row == 0) {
-			return "redirect:/getBoardOne?boardId="+board.getBoardId();
+			return "redirect:/admin/getBoardOne?boardId="+board.getBoardId();
 		} else {
-			return "redirect:/getBoardList";
+			return "redirect:/admin/getBoardList";
 		}
 	}
 	
@@ -79,7 +81,7 @@ public class BoardController {
 	@PostMapping("/addBoard") // post
 	public String addBoard(Board board) { // 커맨드객체
 		boardService.addBoard(board); // 실행
-		return "redirect:/getBoardList"; // 재요청 sendRedirect -> List로 넘어감
+		return "redirect:/admin/getBoardList"; // 재요청 sendRedirect -> List로 넘어감
 	}
 	
 	// 상세보기 (boardOne)

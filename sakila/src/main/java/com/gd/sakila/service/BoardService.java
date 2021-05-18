@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.management.RuntimeErrorException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,12 +19,14 @@ import com.gd.sakila.vo.Page;
 
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
-@Service // 객체생성
-@Transactional
+@Slf4j // log 객체 생성
+@Service // 객체생성 (spring이 스캔)
+@Transactional // 커밋, 롤백 (예외가 발생하면 롤백)
 public class BoardService {
-	@Autowired private BoardMapper boardMapper;
+	@Autowired private BoardMapper boardMapper; // 스캔한 객체가 있으면 주입
 	@Autowired private CommentMapper commentMapper;
+	
+	
 	
 	// 글 수정
 	public int modifyBoard(Board board) {
@@ -33,7 +37,22 @@ public class BoardService {
 	// 글 삭제
 	public int removeBoard(Board board) {
 		log.debug("▶▶▶▶▶ removeBoard param : "+board.toString());
-		return boardMapper.deleteBoard(board);
+		
+		// 2) 게시글 삭제
+		int boardRow = boardMapper.deleteBoard(board);
+		if(boardRow == 0) { // 게시물이 삭제가 안되면 롤백 
+			return 0;
+		}
+		
+		// 1) 댓글 삭제
+		int commentRow = commentMapper.deleteCommentByBoardId(board.getBoardId());
+		
+		// 디버깅
+		log.debug("▶▶▶▶▶ removeBoard commentRow param : "+commentRow);
+		log.debug("▶▶▶▶▶ removeBoard boardRow param : "+boardRow);
+		
+		return boardRow;
+
 	}
 	
 	// 글 입력

@@ -46,7 +46,7 @@
     <div class="container">
         <h1>removeBoard</h1>
         <form id="removeForm"
-            action="${pageContext.request.contextPath}/removeBoard" method="post">
+            action="${pageContext.request.contextPath}/admin/removeBoard" method="post">
             <div class="form-group">
                 <label for="boardId"> boardId :</label> <input
                     class="form-control" name="boardId" id="boardId" type="text" value = "${boardId}"  readonly="readonly"/>
