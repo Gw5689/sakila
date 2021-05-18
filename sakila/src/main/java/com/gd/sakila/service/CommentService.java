@@ -20,6 +20,7 @@ public class CommentService {
 		int removeComment = commentMapper.deleteCommentByCommentId(commentId);
 		// 디버깅
 		log.debug("▶▶▶▶▶ (S)removeComment param : "+removeComment);
+		// 리턴
 		return removeComment;
 	}
 	
@@ -28,6 +29,7 @@ public class CommentService {
 		int addComment = commentMapper.insertComment(comment);
 		// 디버깅
 		log.debug("▶▶▶▶▶ (S)addComment param : "+addComment);
+		// 리턴
 		return addComment;
 	}
 	
